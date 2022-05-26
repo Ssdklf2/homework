@@ -63,7 +63,7 @@ public class Reader  implements Callable<ConcurrentLinkedQueue<String>> {
     }
 
     @Override
-    public ConcurrentLinkedQueue<String> call() throws Exception {
+    public ConcurrentLinkedQueue<String> call() {
         return reade(array, VOYNA_I_MIR_TXT);
     }
 }
