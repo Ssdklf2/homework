@@ -4,17 +4,38 @@ package w1d5;
 import java.io.Serializable;
 
 public class Animal implements Serializable {
-    private static final long serialVersionUID = -8924355970907751648L;
+    private static final long serialVersionUID = 1427939964795432847L;
     private String genus;
     private String name;
     private int id;
-    Aviary aviary;
+    private transient Aviary aviary;
+
+    public Animal() {
+    }
 
     public Animal(String genus, String name, int id, Aviary aviary) {
         this.genus = genus;
         this.name = name;
         this.id = id;
         this.aviary = aviary;
+    }
+
+    /**
+     * Получить информацию о животном
+     *
+     * @return род, имя и id животного
+     */
+    public String getInfoAboutAnimal() {
+        return "Animal: " + "genus='" + genus + '\'' + ", name='" + name + '\'' + ", id=" + id;
+    }
+
+    /**
+     * Получить информацию о вольере животного
+     *
+     * @return размер и id вольера
+     */
+    public String getInfoAboutAviary() {
+        return "Aviary: " + aviary;
     }
 
     public String getGenus() {
@@ -49,17 +70,4 @@ public class Animal implements Serializable {
         this.aviary = aviary;
     }
 
-    @Override
-    public String toString() {
-        return "Animal: " + "genus='" + genus + '\'' + ", name='" + name + '\'' + ", id=" + id;
-    }
-
-    /**
-     * Получить информацию о вольере животного
-     *
-     * @return размер и id вольера
-     */
-    public String getInfoAboutAviary() {
-        return "Aviary: " + aviary;
-    }
 }

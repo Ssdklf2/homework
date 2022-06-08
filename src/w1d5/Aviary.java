@@ -3,7 +3,7 @@ package w1d5;
 import java.io.Serializable;
 
 public class Aviary implements Serializable {
-    private static final long serialVersionUID = -3117060118481524838L;
+    private static final long serialVersionUID = 8251692306685143357L;
     int id;
     int size;
 
