@@ -69,8 +69,6 @@ public interface InterfaceSerialize {
             }
         } catch (IllegalAccessException e) {
             throw new RuntimeException(e);
-
         }
     }
-
 }

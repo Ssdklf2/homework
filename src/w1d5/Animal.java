@@ -8,7 +8,7 @@ public class Animal implements Serializable {
     private String genus;
     private String name;
     private int id;
-    private transient Aviary aviary;
+    private Aviary aviary;
 
     public Animal() {
     }
