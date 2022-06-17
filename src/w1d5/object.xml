@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<w1d5.Animal>
+<serialVersionUID>1427939964795432847</serialVersionUID>
+<genus>Panther</genus>
+<name>Alex</name>
+<id>321</id>
+<w1d5.Aviary>
+<serialVersionUID>8251692306685143357</serialVersionUID>
+<width>12</width>
+<height>30</height>
+</w1d5.Aviary>
+</w1d5.Animal>

@@ -4,32 +4,35 @@ import java.io.Serializable;
 
 public class Aviary implements Serializable {
     private static final long serialVersionUID = 8251692306685143357L;
-    int id;
-    int size;
+    int width;
+    int height;
 
-    public Aviary(int id, int size) {
-        this.id = id;
-        this.size = size;
+    public Aviary() {
     }
 
     @Override
     public String toString() {
-        return "Aviary: " + "id=" + id + ", size=" + size;
+        return width + "," + height;
     }
 
-    public int getId() {
-        return id;
+    public Aviary(int width, int height) {
+        this.width = width;
+        this.height = height;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public int getWidth() {
+        return width;
     }
 
-    public int getSize() {
-        return size;
+    public void setWidth(int width) {
+        this.width = width;
     }
 
-    public void setSize(int size) {
-        this.size = size;
+    public int getHeight() {
+        return height;
+    }
+
+    public void setHeight(int height) {
+        this.height = height;
     }
 }

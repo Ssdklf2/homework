@@ -26,7 +26,7 @@ public class Animal implements Serializable {
      * @return род, имя и id животного
      */
     public String getInfoAboutAnimal() {
-        return "Animal: " + "genus='" + genus + '\'' + ", name='" + name + '\'' + ", id=" + id;
+        return "Animal: " + "genus='" + genus + '\'' + ", name='" + name + '\'' + ", id=" + id + "\n" + getInfoAboutAviary();
     }
 
     /**
