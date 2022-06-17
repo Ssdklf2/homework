@@ -71,8 +71,9 @@ public class Function implements InterfaceSerialize {
 
     /**
      * Создает элементы полей класса в файле
-     * @param object класс, поля которого будут записываться в документ
-     * @param doc файл
+     *
+     * @param object       класс, поля которого будут записываться в документ
+     * @param doc          файл
      * @param classElement элемент с именем класса
      */
     private void createElements(Object object, Document doc, Element classElement) {
@@ -106,8 +107,9 @@ public class Function implements InterfaceSerialize {
     }
 
     /**
-     *Устанавливает значения в объект
-     * @param objIn объект, в который подставляются значения
+     * Устанавливает значения в объект
+     *
+     * @param objIn  объект, в который подставляются значения
      * @param values значения
      */
     private void setFieldsInObj(Object objIn, String values) {
@@ -132,7 +134,8 @@ public class Function implements InterfaceSerialize {
 
     /**
      * Получить объект из файла
-     * @param document файл
+     *
+     * @param document       файл
      * @param nodeObjectName узел xml-файла
      * @return объект
      */
@@ -171,9 +174,10 @@ public class Function implements InterfaceSerialize {
 
     /**
      * Подставляет значения по типу поля
+     *
      * @param object объект в который записываются значение
-     * @param field поле объекта
-     * @param value значение
+     * @param field  поле объекта
+     * @param value  значение
      */
     private void setField(Object object, Field field, String value) throws IllegalAccessException {
         switch (field.getType().getName()) {
