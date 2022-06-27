@@ -11,7 +11,7 @@ public class Client {
         try {
             Socket clientSocket = new Socket(HOST, Server.PORT);
             clientConnection.connectToChat(clientSocket);
-        } catch (IOException | InterruptedException e) {
+        } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }

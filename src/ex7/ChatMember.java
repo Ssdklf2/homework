@@ -4,7 +4,7 @@ import java.io.*;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
 
-public class ChatMember implements Runnable {
+public class ChatMember implements Runnable, Connection {
     private final Socket socket;
     private final BufferedWriter writer;
     private final BufferedReader reader;
@@ -23,11 +23,7 @@ public class ChatMember implements Runnable {
 
     @Override
     public void run() {
-        try {
-            connectToChat(socket);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        connectToChat(socket);
     }
 
     /**
@@ -36,29 +32,29 @@ public class ChatMember implements Runnable {
      *
      * @param clientSocket сокет клиента
      */
-    void connectToChat(Socket clientSocket) throws IOException {
+    @Override
+    public void connectToChat(Socket clientSocket) {
         writeLine(">>> Name: ");
-        String name = reader.readLine();
-        Server.chatMembers.add(this);
-        sendToAllMembers(">>> " + name + " connected to chat\r\n");
-        sendToAllMembers(">>> The number of chat members: " + Server.chatMembers.size() + "\r\n");
-        while (clientSocket.isConnected()) {
-            String message = reader.readLine();
-            if (itQuit(name, message)) {
-                break;
-            }
-            if (message.isEmpty()) {
-                continue;
-            }
-            sendToAllMembers(name + ": " + message + "\r\n");
-        }
+        String name;
         try {
-            writer.close();
-            reader.close();
-            clientSocket.close();
+            name = reader.readLine();
+            Server.chatMembers.add(this);
+            sendToAllMembers(">>> " + name + " connected to chat\r\n");
+            sendToAllMembers(">>> The number of chat members: " + Server.chatMembers.size() + "\r\n");
+            while (clientSocket.isConnected()) {
+                String message = reader.readLine();
+                if (itQuit(name, message)) {
+                    break;
+                }
+                if (message.isEmpty()) {
+                    continue;
+                }
+                sendToAllMembers(name + ": " + message + "\r\n");
+            }
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+        closeAll(clientSocket, reader, writer);
     }
 
     /**

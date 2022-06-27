@@ -5,25 +5,36 @@ import java.net.Socket;
 import java.nio.charset.StandardCharsets;
 import java.util.Scanner;
 
-public class ClientConnection {
+public class ClientConnection implements Connection {
 
     /**
      * Подключает клиента к чату, запускает два потока, которые обеспечивают отправку и получение сообщений
      *
      * @param clientSocket сокет клиента
      */
-    void connectToChat(Socket clientSocket) throws IOException, InterruptedException {
-        BufferedWriter writer = new BufferedWriter(
-                new OutputStreamWriter(clientSocket.getOutputStream(), StandardCharsets.UTF_8));
-        BufferedReader reader = new BufferedReader(
-                new InputStreamReader(clientSocket.getInputStream(), StandardCharsets.UTF_8));
-        greeting(writer, reader);
+    @Override
+    public void connectToChat(Socket clientSocket) {
+        BufferedWriter writer;
+        BufferedReader reader;
+        try {
+            writer = new BufferedWriter(
+                    new OutputStreamWriter(clientSocket.getOutputStream(), StandardCharsets.UTF_8));
+            reader = new BufferedReader(
+                    new InputStreamReader(clientSocket.getInputStream(), StandardCharsets.UTF_8));
+            greeting(writer, reader);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
         Thread sender = new Thread(() -> send(writer));
         Thread receiver = new Thread(() -> receive(clientSocket, reader, writer, sender));
         receiver.start();
         sender.start();
-        sender.join();
-        receiver.join();
+        try {
+            sender.join();
+            receiver.join();
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     /**
@@ -42,7 +53,7 @@ public class ClientConnection {
     }
 
     /**
-     * Посылает сообщения, если пользователь посылает quit поток завершает своб работу
+     * Посылает сообщения, если пользователь посылает quit, то поток завершает свою работу
      *
      * @param writer для отправки сообщений
      */
@@ -81,18 +92,6 @@ public class ClientConnection {
         closeAll(clientSocket, reader, writer);
     }
 
-    /**
-     * Закрывает все потоки
-     */
-    private void closeAll(Socket clientSocket, BufferedReader reader, BufferedWriter writer) {
-        try {
-            writer.close();
-            reader.close();
-            clientSocket.close();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
 
     /**
      * Отправляет строку
