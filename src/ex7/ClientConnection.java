@@ -30,7 +30,7 @@ public class ClientConnection {
      * Записывает имя пользователя, подключает к чату
      *
      * @param writer для отправки сообщений
-     * @param reader для получия сообщений
+     * @param reader для получения сообщений
      */
     private void greeting(BufferedWriter writer, BufferedReader reader) throws IOException {
         Scanner sc = new Scanner(System.in);
@@ -67,7 +67,7 @@ public class ClientConnection {
      *
      * @param clientSocket сокет клиента
      * @param writer       для отправки сообщений
-     * @param reader       для получия сообщений
+     * @param reader       для получения сообщений
      * @param sender       поток посылающий сообщения
      */
     private void receive(Socket clientSocket, BufferedReader reader, BufferedWriter writer, Thread sender) {
