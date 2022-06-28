@@ -6,12 +6,12 @@ import java.io.IOException;
 import java.net.Socket;
 
 public interface Connection {
-    void connectToChat(Socket clientSocket);
+    void connectToChat(Socket clientSocket) throws IOException;
 
     /**
      * Закрывает все потоки
      */
-    default void closeAll(Socket clientSocket, BufferedReader reader, BufferedWriter writer) {
+    static void closeAll(Socket clientSocket, BufferedReader reader, BufferedWriter writer) {
         try {
             writer.close();
             reader.close();

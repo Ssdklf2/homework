@@ -25,6 +25,8 @@ import java.util.List;
  */
 public class Server {
     public static final int PORT = 8000;
+    public static final String HOST = "localhost";
+
     static List<ChatMember> chatMembers = new ArrayList<>();
 
     public static void main(String[] args) throws IOException {

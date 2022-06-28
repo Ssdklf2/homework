@@ -23,7 +23,11 @@ public class ChatMember implements Runnable, Connection {
 
     @Override
     public void run() {
-        connectToChat(socket);
+        try {
+            connectToChat(socket);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     /**
@@ -33,28 +37,22 @@ public class ChatMember implements Runnable, Connection {
      * @param clientSocket сокет клиента
      */
     @Override
-    public void connectToChat(Socket clientSocket) {
+    public void connectToChat(Socket clientSocket) throws IOException {
         writeLine(">>> Name: ");
-        String name;
-        try {
-            name = reader.readLine();
-            Server.chatMembers.add(this);
-            sendToAllMembers(">>> " + name + " connected to chat\r\n");
-            sendToAllMembers(">>> The number of chat members: " + Server.chatMembers.size() + "\r\n");
-            while (clientSocket.isConnected()) {
-                String message = reader.readLine();
-                if (itQuit(name, message)) {
-                    break;
-                }
-                if (message.isEmpty()) {
-                    continue;
-                }
+        String name = reader.readLine();
+        Server.chatMembers.add(this);
+        sendToAllMembers(">>> " + name + " connected to chat\r\n");
+        sendToAllMembers(">>> The number of chat members: " + Server.chatMembers.size() + "\r\n");
+        while (true) {
+            String message = reader.readLine();
+            if (itQuit(name, message)) {
+                break;
+            }
+            if (!message.isEmpty()) {
                 sendToAllMembers(name + ": " + message + "\r\n");
             }
-        } catch (IOException e) {
-            throw new RuntimeException(e);
         }
-        closeAll(clientSocket, reader, writer);
+        Connection.closeAll(clientSocket, reader, writer);
     }
 
     /**
@@ -66,7 +64,7 @@ public class ChatMember implements Runnable, Connection {
      * @return true если сообщение равняется quit
      */
     private boolean itQuit(String name, String message) {
-        if (message.equalsIgnoreCase("quit")) {
+        if (message.trim().equalsIgnoreCase("quit")) {
             sendToAllMembers(">>> " + name + " disconnected from the chat\r\n");
             Server.chatMembers.remove(this);
             sendToAllMembers(">>> The number of chat members: " + Server.chatMembers.size() + "\r\n");
@@ -76,31 +74,30 @@ public class ChatMember implements Runnable, Connection {
     }
 
     /**
+     * Посылает сообщение всем участникам чата
+     *
+     * @param s сообщение
+     */
+    private void sendToAllMembers(String s) {
+        if (!s.isEmpty()) {
+            System.out.println(s);
+            for (ChatMember chatMember : Server.chatMembers) {
+                chatMember.writeLine(s);
+            }
+        }
+    }
+
+    /**
      * Отправляет строку
      *
      * @param s строка
      */
-    void writeLine(String s) {
+    private void writeLine(String s) {
         try {
             writer.write(s);
             writer.flush();
         } catch (IOException e) {
             throw new RuntimeException(e);
-        }
-    }
-
-    /**
-     * Посылает сообщение всем участникам чата
-     *
-     * @param s сообщение
-     */
-    static synchronized void sendToAllMembers(String s) {
-        if (s.isEmpty()) {
-            return;
-        }
-        System.out.println(s);
-        for (ChatMember chatMember : Server.chatMembers) {
-            chatMember.writeLine(s);
         }
     }
 }
