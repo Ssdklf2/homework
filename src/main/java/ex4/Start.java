@@ -1,4 +1,4 @@
-package w1d4;
+package ex4;
 
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ExecutionException;

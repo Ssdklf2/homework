@@ -1,4 +1,4 @@
-package w1d1;
+package ex1;
 
 import java.util.Arrays;
 

@@ -1,4 +1,4 @@
-package w1d5;
+package ex5;
 
 import org.w3c.dom.*;
 
@@ -80,7 +80,7 @@ public class Function implements InterfaceSerialize {
         Field[] fields = object.getClass().getDeclaredFields();
         for (Field field : fields) {
             field.setAccessible(true);
-            if (field.getType().getTypeName().startsWith("w1d5")) {
+            if (field.getType().getTypeName().startsWith("ex5")) {
                 Object objIn;
                 try {
                     objIn = Class.forName(field.getType().getName()).newInstance();
@@ -152,7 +152,7 @@ public class Function implements InterfaceSerialize {
                 if (fieldElements.item(i).getNodeName().equals("serialVersionUID")) {
                     continue;
                 }
-                if (fieldElements.item(i).getNodeName().startsWith("w1d5")) {
+                if (fieldElements.item(i).getNodeName().startsWith("ex5")) {
                     Node elObj = fieldElements.item(i);
                     Object objeIn = getObject(document, elObj);
                     String fieldName = fieldElements.item(i).getNodeName().substring(5).toLowerCase();

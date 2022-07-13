@@ -1,4 +1,4 @@
-package w1d2;
+package ex2;
 
 import java.util.ArrayList;
 import java.util.Objects;

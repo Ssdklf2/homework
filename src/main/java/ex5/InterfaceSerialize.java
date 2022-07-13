@@ -1,4 +1,4 @@
-package w1d5;
+package ex5;
 
 public interface InterfaceSerialize {
     void serialize(Object object, String filename);

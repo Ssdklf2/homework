@@ -1,4 +1,4 @@
-package w1d4;
+package ex4;
 
 import java.io.FileWriter;
 import java.io.IOException;

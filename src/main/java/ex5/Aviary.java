@@ -1,4 +1,4 @@
-package w1d5;
+package ex5;
 
 import java.io.Serializable;
 

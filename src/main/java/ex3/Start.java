@@ -1,4 +1,4 @@
-package w1d3;
+package ex3;
 
 public class Start {
     public static final String SRC_W_1_D_3_WORDS_TXT = "src\\w1d3\\words.txt";
