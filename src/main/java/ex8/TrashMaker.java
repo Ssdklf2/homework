@@ -1,7 +1,6 @@
 package ex8;
 
-import com.sun.xml.internal.messaging.saaj.util.ByteOutputStream;
-
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.util.ArrayList;
@@ -23,7 +22,7 @@ public class TrashMaker {
     public void doGarbage() throws IOException {
         ArrayList<String> strings = new ArrayList<>();
         ArrayList<ArrayList<String>> listOfStrings = new ArrayList<>();
-        OutputStreamWriter writer = new OutputStreamWriter(new ByteOutputStream());
+        OutputStreamWriter writer = new OutputStreamWriter(new ByteArrayOutputStream());
         for (int i = 0; i < 1_000_000; i++) {
             String trash = String.valueOf(Math.random() * 10000);
             strings.add(trash.intern());
