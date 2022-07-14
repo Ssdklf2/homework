@@ -41,7 +41,7 @@ public class RequestsStudent implements Requests {
     public void readTable() {
         System.out.println("____\nStudents list: \n____");
         try (Statement st = getStatement()) {
-            ResultSet resultSet = st.executeQuery("SELECT * FROM students"); ///!!!!!!!!!!!****
+            ResultSet resultSet = st.executeQuery("SELECT * FROM students");
             while (resultSet.next()) {
                 int id = resultSet.getInt("student_id");
                 String name = resultSet.getString("student_name");

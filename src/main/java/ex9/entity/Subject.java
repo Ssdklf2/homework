@@ -1,8 +1,8 @@
 package ex9.entity;
 
 public class Subject {
-    private int id;
-    private String description;
+    private final int id;
+    private final String description;
 
     public Subject(int id, String description) {
         this.id = id;
@@ -19,6 +19,6 @@ public class Subject {
 
     @Override
     public String toString() {
-        return "{(id: " + id + ") " + description +'}';
+        return "{(id: " + id + ") " + description + '}';
     }
 }

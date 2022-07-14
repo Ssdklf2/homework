@@ -42,8 +42,8 @@ public class RequestsSubject implements Requests {
                 int id = resultSet.getInt("subject_id");
                 String desc = resultSet.getString("subject_desc");
                 System.out.println("ID: " + id + "\n" +
-                        "Description: " + desc +
-                        "\n__________");
+                                "Description: " + desc +
+                                "\n__________");
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -60,8 +60,8 @@ public class RequestsSubject implements Requests {
             System.out.print("Description: ");
             String desc = sc.nextLine();
             st.execute("UPDATE subjects " +
-                    "SET subject_desc = ' " + desc + "'" +
-                    "WHERE subject_id =" + Integer.parseInt(idString));
+                            "SET subject_desc = ' " + desc + "'" +
+                            "WHERE subject_id =" + Integer.parseInt(idString));
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

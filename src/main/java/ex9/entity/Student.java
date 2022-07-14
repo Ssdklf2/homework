@@ -3,9 +3,9 @@ package ex9.entity;
 import java.sql.Date;
 
 public class Student {
-    private int id;
-    private String name;
-    private Date birthDate;
+    private final int id;
+    private final String name;
+    private final Date birthDate;
 
     public Student(int id, String name, Date birthDate) {
         this.id = id;

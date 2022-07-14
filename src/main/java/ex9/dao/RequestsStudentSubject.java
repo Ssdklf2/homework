@@ -17,12 +17,11 @@ public class RequestsStudentSubject implements Requests {
         System.out.println("Add a student to a subject: ");
         try (Statement st = getStatement()) {
             System.out.print("Student`s id: ");
-            String idStud = sc.nextLine();
+            int idStud = sc.nextInt();
             System.out.print("Subject`s id: ");
-            String idSubj = sc.nextLine();
+           int idSubj = sc.nextInt();
             st.execute("INSERT INTO students_subjects " +
-                    "VALUES " +
-                    "(" + Integer.parseInt(idStud) + "," + Integer.parseInt(idSubj) + ")");
+                    "VALUES " + "(" + idStud + "," + idSubj + ")");
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -49,11 +48,12 @@ public class RequestsStudentSubject implements Requests {
         System.out.println("____\nList of student names and subjects: \n____");
         try (Statement st = getStatement()) {
             ResultSet resultSet = st.executeQuery(
-                    "SELECT student_name, subject_desc\n" +
-                            "FROM students_subjects \n" +
-                            "JOIN students USING (student_id)\n" +
-                            "JOIN subjects USING (subject_id)\n" +
-                            "ORDER BY subject_desc;");
+                    """
+                            SELECT student_name, subject_desc
+                            FROM students_subjects\s
+                            JOIN students USING (student_id)
+                            JOIN subjects USING (subject_id)
+                            ORDER BY subject_desc;""");
             while (resultSet.next()) {
                 String subj = resultSet.getString("subject_desc");
                 String stud = resultSet.getString("student_name");
