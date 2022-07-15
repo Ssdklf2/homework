@@ -1,12 +1,12 @@
 package ex9.dao;
 
 import java.sql.Date;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.Scanner;
 
-public class RequestsStudent implements Requests {
+public class RequestsStudent implements Requests, RequestConstants {
 
     @Override
     public void add() {
@@ -15,10 +15,11 @@ public class RequestsStudent implements Requests {
         System.out.print("Enter student name: ");
         String name = sc.nextLine();
         System.out.print("Date of birth: ");
-        String date = sc.nextLine();
-        try (Statement st = getStatement()) {
-            st.execute("INSERT INTO students (student_name, birth_date) " +
-                    "VALUES ( '" + name + "', '" + date + "')");
+        Date date = Date.valueOf(sc.nextLine());
+        try (PreparedStatement st = getPreparedStatement(INSERT_STUDENT_NAME_DATE)) {
+            st.setString(1, name);
+            st.setDate(2, date);
+            st.execute();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -30,8 +31,9 @@ public class RequestsStudent implements Requests {
         System.out.println("Delete student data:");
         System.out.print("Enter student id: ");
         int id = sc.nextInt();
-        try (Statement st = getStatement()) {
-            st.execute("DELETE FROM students WHERE student_id = " + id);
+        try (PreparedStatement st = getPreparedStatement(DELETE_STUDENT_WHERE_ID)) {
+            st.setInt(1, id);
+            st.execute();
         } catch (SQLException e) {
             throw new RuntimeException();
         }
@@ -40,16 +42,14 @@ public class RequestsStudent implements Requests {
     @Override
     public void readTable() {
         System.out.println("____\nStudents list: \n____");
-        try (Statement st = getStatement()) {
-            ResultSet resultSet = st.executeQuery("SELECT * FROM students");
+        try (PreparedStatement st = getPreparedStatement(SELECT_FROM_STUDENTS)) {
+            ResultSet resultSet = st.executeQuery();
             while (resultSet.next()) {
-                int id = resultSet.getInt("student_id");
                 String name = resultSet.getString("student_name");
                 Date date = resultSet.getDate("birth_date");
-                System.out.println("ID: " + id + "\n" +
-                        "Name: " + name + "\n" +
-                        "Date of Birth: " + date +
-                        "\n__________");
+                System.out.printf(
+                        "Name: %s \n Date of Birth: %tF %n ", name, date);
+                System.out.println("__________");
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -60,16 +60,17 @@ public class RequestsStudent implements Requests {
     public void change() {
         Scanner sc = new Scanner(System.in);
         System.out.println("Change student data:");
-        try (Statement st = getStatement()) {
+        try (PreparedStatement st = getPreparedStatement(UPDATE_STUDENTS)) {
             System.out.print("ID: ");
-            String idString = sc.nextLine();
+            int id = Integer.parseInt(sc.nextLine());
             System.out.print("Name: ");
             String name = sc.nextLine();
             System.out.print("Date of birth: ");
-            String date = sc.nextLine();
-            st.execute("UPDATE students " +
-                    "SET student_name = ' " + name + "', birth_date = '" + date + "' " +
-                    "WHERE student_id =" + Integer.parseInt(idString));
+            Date date = Date.valueOf(sc.nextLine());
+            st.setString(1, name);
+            st.setDate(2, date);
+            st.setInt(3, id);
+            st.execute();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

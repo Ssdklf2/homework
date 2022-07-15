@@ -1,11 +1,9 @@
 package ex9.dao;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 
 public interface Requests {
+
     void add();
 
     void delete();
@@ -14,7 +12,7 @@ public interface Requests {
 
     void change();
 
-    default Statement getStatement() throws SQLException {
+    default PreparedStatement getPreparedStatement(String sql) throws SQLException {
         try {
             Class.forName("org.postgresql.Driver");
         } catch (ClassNotFoundException e) {
@@ -23,6 +21,6 @@ public interface Requests {
         Connection connection = DriverManager.getConnection(
                 "jdbc:postgresql://localhost:5432/StudentsAndSubjects",
                 "postgres", "");
-        return connection.createStatement();
+        return connection.prepareStatement(sql);
     }
 }

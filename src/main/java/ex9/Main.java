@@ -14,11 +14,11 @@ public class Main {
         rqStud.readTable();
 
         rqStud.delete();
-//        rqStud.add();
-//        rqStud.change();
+        rqStud.add();
+        rqStud.change();
 
         rqStud.readTable();
-//
+
 //        RequestsSubject rqSubj = new RequestsSubject();
 //        rqSubj.readTable();
 //
@@ -30,17 +30,17 @@ public class Main {
 //
 //        RequestsStudentSubject rqStudSubj = new RequestsStudentSubject();
 //        rqStudSubj.readTable();
-//
+
 //        rqStudSubj.add();
 //        rqStudSubj.delete();
 //        rqStudSubj.change();
 //
 //        Collection<Student> students = rqStudSubj.getAllStudents();
 //        System.out.println(students);
-//
+
 //        Collection<Subject> subjects = rqStudSubj.getAllSubjects();
 //        System.out.println(subjects);
-//
+
 //        rqStudSubj.readTable();
     }
 }

@@ -3,25 +3,26 @@ package ex9.dao;
 import ex9.entity.Student;
 import ex9.entity.Subject;
 
-import java.sql.Date;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class RequestsStudentSubject implements Requests {
+public class RequestsStudentSubject implements Requests, RequestConstants {
+
     @Override
     public void add() {
         Scanner sc = new Scanner(System.in);
-        System.out.println("Add student to subject: ");
-        try (Statement st = getStatement()) {
+        System.out.println("Add student to subject list:");
+        try (PreparedStatement st = getPreparedStatement(INSERT_STUDENT_ID_SUBJECT_ID)) {
             System.out.print("Student id: ");
             int idStud = sc.nextInt();
             System.out.print("Subject id: ");
-           int idSubj = sc.nextInt();
-            st.execute("INSERT INTO students_subjects " +
-                    "VALUES " + "(" + idStud + "," + idSubj + ")");
+            int idSubj = sc.nextInt();
+            st.setInt(1, idStud);
+            st.setInt(2, idSubj);
+            st.execute();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -35,9 +36,10 @@ public class RequestsStudentSubject implements Requests {
         int idStud = sc.nextInt();
         System.out.print("Enter subject id: ");
         int idSubj = sc.nextInt();
-        try (Statement st = getStatement()) {
-            st.execute("DELETE FROM students_subjects " +
-                    "WHERE student_id = " + idStud + "AND subject_id = " + idSubj);
+        try (PreparedStatement st = getPreparedStatement(DELETE_FROM_STUDENTS_SUBJECTS)) {
+            st.setInt(1, idStud);
+            st.setInt(2, idSubj);
+            st.execute();
         } catch (SQLException e) {
             throw new RuntimeException();
         }
@@ -46,20 +48,14 @@ public class RequestsStudentSubject implements Requests {
     @Override
     public void readTable() {
         System.out.println("____\nList of student names and subjects: \n____");
-        try (Statement st = getStatement()) {
-            ResultSet resultSet = st.executeQuery(
-                    """
-                            SELECT student_name, subject_desc
-                            FROM students_subjects\s
-                            JOIN students USING (student_id)
-                            JOIN subjects USING (subject_id)
-                            ORDER BY subject_desc;""");
+        try (PreparedStatement st = getPreparedStatement(SELECT_STUDENT_NAME_SUBJECT_DESC)) {
+            ResultSet resultSet = st.executeQuery();
             while (resultSet.next()) {
                 String subj = resultSet.getString("subject_desc");
                 String stud = resultSet.getString("student_name");
-                System.out.println("Subject: " + subj + "\n" +
-                        "Student name: " + stud +
-                        "\n__________");
+                System.out.printf("Subject: %s \n" +
+                        "Student name: %s", subj, stud);
+                System.out.println("\n__________");
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -70,16 +66,17 @@ public class RequestsStudentSubject implements Requests {
     public void change() {
         Scanner sc = new Scanner(System.in);
         System.out.println("Change student data (another subject):");
-        try (Statement st = getStatement()) {
+        try (PreparedStatement st = getPreparedStatement(UPDATE_STUDENTS_SUBJECTS)) {
             System.out.print("Student id: ");
             int idStud = sc.nextInt();
             System.out.print("Subject id: ");
             int idSubj = sc.nextInt();
             System.out.print("Enter new subject id: ");
             int idNewSubj = sc.nextInt();
-            st.execute("UPDATE students_subjects " +
-                    "SET subject_id = '" + idNewSubj + "' " +
-                    "WHERE student_id =" + idStud + "AND subject_id = " + idSubj);
+            st.setInt(1, idNewSubj);
+            st.setInt(2, idStud);
+            st.setInt(3, idSubj);
+            st.execute();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -96,23 +93,18 @@ public class RequestsStudentSubject implements Requests {
         System.out.print("Enter student id: ");
         int id = sc.nextInt();
         ArrayList<Subject> subjectsList = new ArrayList<>();
-        try (Statement st = getStatement()) {
-            ResultSet rs = st.executeQuery(
-                    "SELECT subject_id, subject_desc \n" +
-                            "FROM students_subjects\n" +
-                            "JOIN students USING (student_id)\n" +
-                            "JOIN subjects USING (subject_id)\n" +
-                            "WHERE student_id = " + id);
+        try (PreparedStatement st = getPreparedStatement(SELECT_SUBJECT_ID_DESC)) {
+            st.setInt(1, id);
+            ResultSet rs = st.executeQuery();
             while (rs.next()) {
-                int idSubj = rs.getInt("subject_id");
-                String desc = rs.getString("subject_desc");
-                subjectsList.add(new Subject(idSubj, desc));
+                Subject subject = new Subject();
+                subject.setDescription(rs.getString("subject_desc"));
+                subjectsList.add(subject);
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
         return subjectsList;
-
     }
 
     /**
@@ -126,18 +118,15 @@ public class RequestsStudentSubject implements Requests {
         System.out.print("Enter subject id: ");
         int id = sc.nextInt();
         ArrayList<Student> studentsList = new ArrayList<>();
-        try (Statement st = getStatement()) {
-            ResultSet rs = st.executeQuery(
-                    "SELECT student_id, student_name, birth_date \n" +
-                            "FROM students_subjects\n" +
-                            "JOIN students USING (student_id)\n" +
-                            "JOIN subjects USING (subject_id)\n" +
-                            "WHERE subject_id = " + id);
+        try (PreparedStatement st = getPreparedStatement(SELECT_STUDENT_WHERE_SUBJECT)) {
+            st.setInt(1, id);
+            ResultSet rs = st.executeQuery();
             while (rs.next()) {
-                int idStud = rs.getInt("student_id");
-                String name = rs.getString("student_name");
-                Date date = rs.getDate("birth_date");
-                studentsList.add(new Student(idStud, name, date));
+                Student student = new Student();
+                student.setId(rs.getInt("student_id"));
+                student.setName(rs.getString("student_name"));
+                student.setBirthDate(rs.getDate("birth_date"));
+                studentsList.add(student);
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);

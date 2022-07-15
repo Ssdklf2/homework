@@ -3,9 +3,9 @@ package ex9.entity;
 import java.sql.Date;
 
 public class Student {
-    private final int id;
-    private final String name;
-    private final Date birthDate;
+    private int id;
+    private String name;
+    private Date birthDate;
 
     public Student(int id, String name, Date birthDate) {
         this.id = id;
@@ -13,21 +13,35 @@ public class Student {
         this.birthDate = birthDate;
     }
 
+    public Student() {
+    }
+
     public int getId() {
         return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getName() {
         return name;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public Date getBirthDate() {
         return birthDate;
     }
 
+    public void setBirthDate(Date birthDate) {
+        this.birthDate = birthDate;
+    }
+
     @Override
     public String toString() {
-        return "{id = " + id + ", name = " + name + '\'' +
-                ", date of birth = " + birthDate + "}";
+        return name;
     }
 }

@@ -1,20 +1,22 @@
 package ex9.dao;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.Scanner;
 
-public class RequestsSubject implements Requests {
+public class RequestsSubject implements Requests, RequestConstants {
+
+
     @Override
     public void add() {
         Scanner sc = new Scanner(System.in);
         System.out.println("Add subject:");
         System.out.print("Description of the subject: ");
         String desc = sc.nextLine();
-        try (Statement st = getStatement()) {
-            st.execute("INSERT INTO subjects (subject_desc) " +
-                    "VALUES ( '" + desc + "')");
+        try (PreparedStatement st = getPreparedStatement(INSERT_SUBJECT_DESC)) {
+            st.setString(1, desc);
+            st.execute();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -26,8 +28,9 @@ public class RequestsSubject implements Requests {
         System.out.println("Delete subject:");
         System.out.print("Enter subject id: ");
         int id = sc.nextInt();
-        try (Statement st = getStatement()) {
-            st.execute("DELETE FROM subjects WHERE subject_id = " + id);
+        try (PreparedStatement st = getPreparedStatement(DELETE_FROM_SUBJECTS)) {
+            st.setInt(1, id);
+            st.execute();
         } catch (SQLException e) {
             throw new RuntimeException();
         }
@@ -36,14 +39,12 @@ public class RequestsSubject implements Requests {
     @Override
     public void readTable() {
         System.out.println("____\nSubjects list: \n____");
-        try (Statement st = getStatement()) {
-            ResultSet resultSet = st.executeQuery("SELECT * FROM subjects");
+        try (PreparedStatement st = getPreparedStatement(SELECT_SUBJECT_DESC)) {
+            ResultSet resultSet = st.executeQuery();
             while (resultSet.next()) {
-                int id = resultSet.getInt("subject_id");
                 String desc = resultSet.getString("subject_desc");
-                System.out.println("ID: " + id + "\n" +
-                                "Description: " + desc +
-                                "\n__________");
+                System.out.printf("Description: %s ", desc);
+                System.out.println("\n__________");
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -54,14 +55,14 @@ public class RequestsSubject implements Requests {
     public void change() {
         Scanner sc = new Scanner(System.in);
         System.out.println("Change subject:");
-        try (Statement st = getStatement()) {
+        try (PreparedStatement st = getPreparedStatement(UPDATE_SUBJECTS)) {
             System.out.print("ID: ");
-            String idString = sc.nextLine();
+            int id = Integer.parseInt(sc.nextLine());
             System.out.print("Description: ");
             String desc = sc.nextLine();
-            st.execute("UPDATE subjects " +
-                            "SET subject_desc = ' " + desc + "'" +
-                            "WHERE subject_id =" + Integer.parseInt(idString));
+            st.setString(1, desc);
+            st.setInt(2, id);
+            st.execute();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
