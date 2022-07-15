@@ -14,7 +14,7 @@ public class RequestsStudentSubject implements Requests {
     @Override
     public void add() {
         Scanner sc = new Scanner(System.in);
-        System.out.println("Add a student to a subject: ");
+        System.out.println("Add student to subject: ");
         try (Statement st = getStatement()) {
             System.out.print("Student`s id: ");
             int idStud = sc.nextInt();
@@ -30,10 +30,10 @@ public class RequestsStudentSubject implements Requests {
     @Override
     public void delete() {
         Scanner sc = new Scanner(System.in);
-        System.out.println("Remove a student from a subject:");
-        System.out.print("Enter the student`s id: ");
+        System.out.println("Remove student from a subject list:");
+        System.out.print("Enter student id: ");
         int idStud = sc.nextInt();
-        System.out.print("Enter the subject`s id: ");
+        System.out.print("Enter subject id: ");
         int idSubj = sc.nextInt();
         try (Statement st = getStatement()) {
             st.execute("DELETE FROM students_subjects " +
@@ -58,7 +58,7 @@ public class RequestsStudentSubject implements Requests {
                 String subj = resultSet.getString("subject_desc");
                 String stud = resultSet.getString("student_name");
                 System.out.println("Subject: " + subj + "\n" +
-                        "Student`s name: " + stud +
+                        "Student name: " + stud +
                         "\n__________");
             }
         } catch (SQLException e) {
@@ -71,9 +71,9 @@ public class RequestsStudentSubject implements Requests {
         Scanner sc = new Scanner(System.in);
         System.out.println("Change student data (another subject):");
         try (Statement st = getStatement()) {
-            System.out.print("Student`s id: ");
+            System.out.print("Student id: ");
             int idStud = sc.nextInt();
-            System.out.print("Subject`s id: ");
+            System.out.print("Subject id: ");
             int idSubj = sc.nextInt();
             System.out.print("Enter new subject id: ");
             int idNewSubj = sc.nextInt();

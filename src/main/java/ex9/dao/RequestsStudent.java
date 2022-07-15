@@ -12,7 +12,7 @@ public class RequestsStudent implements Requests {
     public void add() {
         Scanner sc = new Scanner(System.in);
         System.out.println("Add student data: ");
-        System.out.print("Enter the student`s name: ");
+        System.out.print("Enter student name: ");
         String name = sc.nextLine();
         System.out.print("Date of birth: ");
         String date = sc.nextLine();
@@ -28,7 +28,7 @@ public class RequestsStudent implements Requests {
     public void delete() {
         Scanner sc = new Scanner(System.in);
         System.out.println("Delete student data:");
-        System.out.print("Enter the student`s id: ");
+        System.out.print("Enter student id: ");
         int id = sc.nextInt();
         try (Statement st = getStatement()) {
             st.execute("DELETE FROM students WHERE student_id = " + id);

@@ -22,7 +22,7 @@ public interface Requests {
         }
         Connection connection = DriverManager.getConnection(
                 "jdbc:postgresql://localhost:5432/StudentsAndSubjects",
-                "postgres", "][po=-09");
+                "postgres", "");
         return connection.createStatement();
     }
 }

@@ -24,7 +24,7 @@ public class RequestsSubject implements Requests {
     public void delete() {
         Scanner sc = new Scanner(System.in);
         System.out.println("Delete subject:");
-        System.out.print("Enter the subject`s id: ");
+        System.out.print("Enter subject id: ");
         int id = sc.nextInt();
         try (Statement st = getStatement()) {
             st.execute("DELETE FROM subjects WHERE subject_id = " + id);
