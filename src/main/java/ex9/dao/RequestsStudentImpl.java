@@ -6,7 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Scanner;
 
-public class RequestsStudent implements Requests, RequestConstants {
+public class RequestsStudentImpl extends DBConnection implements Requests {
 
     @Override
     public void add() {

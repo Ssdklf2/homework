@@ -9,9 +9,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class RequestsStudentSubject implements Requests, RequestConstants {
+public class RequestsStudentSubjectImpl extends DBConnection implements Requests {
 
-    @Override
     public void add() {
         Scanner sc = new Scanner(System.in);
         System.out.println("Add student to subject list:");
