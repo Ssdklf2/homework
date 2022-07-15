@@ -16,9 +16,9 @@ public class RequestsStudentSubject implements Requests {
         Scanner sc = new Scanner(System.in);
         System.out.println("Add student to subject: ");
         try (Statement st = getStatement()) {
-            System.out.print("Student`s id: ");
+            System.out.print("Student id: ");
             int idStud = sc.nextInt();
-            System.out.print("Subject`s id: ");
+            System.out.print("Subject id: ");
            int idSubj = sc.nextInt();
             st.execute("INSERT INTO students_subjects " +
                     "VALUES " + "(" + idStud + "," + idSubj + ")");
